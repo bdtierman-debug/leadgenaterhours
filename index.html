@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Lead Saver — Presentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>AI Lead Saver</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -21,356 +21,211 @@
   --white: #ffffff;
   --muted: #64748b;
   --muted2: #94a3b8;
-  --text: #e2e8f0;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--white); -webkit-font-smoothing: antialiased; }
 
-html, body {
-  width: 100%; height: 100%;
-  background: #000;
-  font-family: 'Inter', sans-serif;
-  overflow: hidden;
-}
+/* ══════════════════════════════════════
+   DESKTOP — slide presentation
+══════════════════════════════════════ */
+@media (min-width: 768px) {
+  html, body { height: 100%; overflow: hidden; }
+  #mobile-view { display: none; }
+  #desktop-view { display: block; width: 100vw; height: 100vh; }
 
-#stage {
-  width: 100vw; height: 100vh;
-  display: flex; align-items: center; justify-content: center;
-}
+  #stage { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; }
 
-.deck {
-  position: relative;
-  width: min(100vw, calc(100vh * 16/9));
-  height: min(100vh, calc(100vw * 9/16));
-  background: var(--bg);
-  overflow: hidden;
-}
+  .deck {
+    position: relative;
+    width: min(100vw, calc(100vh * 16/9));
+    height: min(100vh, calc(100vw * 9/16));
+    background: var(--bg); overflow: hidden;
+  }
+  .deck::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 28px 28px; pointer-events: none; z-index: 0;
+  }
+  .slide { position: absolute; inset: 0; padding: 6% 7%; display: flex; flex-direction: column; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 1; }
+  .slide.active { opacity: 1; pointer-events: all; }
+  .slide.exit { opacity: 0; }
 
-.deck::before {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none; z-index: 0;
-}
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: clamp(8px,1vw,11px); letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5%; }
+  h1 { font-size: clamp(28px,6vw,72px); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; color: var(--white); margin-bottom: 2%; }
+  h1 .g { color: var(--gold); }
+  h2 { font-size: clamp(18px,3.5vw,42px); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; color: var(--white); margin-bottom: 1.5%; }
+  h2 .g { color: var(--gold); }
+  .sub { font-size: clamp(10px,1.4vw,16px); color: var(--muted2); line-height: 1.7; max-width: 56%; margin-bottom: 4%; }
 
-.slide {
-  position: absolute; inset: 0;
-  padding: 6% 7%;
-  display: flex; flex-direction: column;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 1;
-}
-.slide.active { opacity: 1; pointer-events: all; }
-.slide.exit { opacity: 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2%; }
 
-.eyebrow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(8px, 1vw, 11px);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 1.5%;
-}
-h1 {
-  font-size: clamp(28px, 6vw, 72px);
-  font-weight: 800;
-  line-height: 1.0;
-  letter-spacing: -0.03em;
-  color: var(--white);
-  margin-bottom: 2%;
-}
-h1 .g { color: var(--gold); }
-h2 {
-  font-size: clamp(18px, 3.5vw, 42px);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--white);
-  margin-bottom: 1.5%;
-}
-h2 .g { color: var(--gold); }
-.sub {
-  font-size: clamp(10px, 1.4vw, 16px);
-  color: var(--muted2);
-  line-height: 1.7;
-  max-width: 56%;
-  margin-bottom: 4%;
-}
+  .card { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 5% 6%; position: relative; overflow: hidden; }
+  .card .num { font-family: 'JetBrains Mono', monospace; font-size: clamp(20px,4vw,48px); color: rgba(255,255,255,0.04); font-weight: 400; letter-spacing: -0.05em; line-height: 1; margin-bottom: 6%; }
+  .card .ctitle { font-size: clamp(10px,1.3vw,15px); font-weight: 800; color: var(--white); margin-bottom: 4%; }
+  .card .ctext { font-size: clamp(8px,1vw,12px); color: var(--muted2); line-height: 1.7; }
+  .card .badge { margin-top: 8%; display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: clamp(7px,0.8vw,10px); padding: 2% 5%; border-radius: 4px; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.25); color: var(--orange); letter-spacing: 0.06em; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(240,92,42,0.6), transparent); }
 
-.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2%; }
-.grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.2%; }
+  #s1 { justify-content: center; }
+  #s1 .glow { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); width: 60%; height: 40%; background: radial-gradient(ellipse, rgba(240,192,64,0.07) 0%, transparent 70%); pointer-events: none; }
+  #s1 .tag { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: clamp(7px,0.9vw,10px); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(240,192,64,0.25); background: rgba(240,192,64,0.05); padding: 0.5% 1.5%; border-radius: 100px; margin-bottom: 3%; width: fit-content; }
+  #s1 .tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 2s ease-in-out infinite; }
+  #s1 .stats { display: flex; gap: 2%; margin-top: 5%; padding-top: 4%; border-top: 1px solid var(--border); }
+  #s1 .stat-num { font-size: clamp(18px,3.5vw,40px); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; margin-bottom: 3%; }
+  #s1 .stat-num span { color: var(--gold); }
+  #s1 .stat-label { font-family: 'JetBrains Mono', monospace; font-size: clamp(6px,0.75vw,9px); letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; line-height: 1.5; }
 
-.card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 10px;
-  padding: 5% 6%;
-  position: relative;
-  overflow: hidden;
-}
-.card .num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(20px, 4vw, 48px);
-  color: rgba(255,255,255,0.04);
-  font-weight: 400;
-  letter-spacing: -0.05em;
-  line-height: 1;
-  margin-bottom: 6%;
-}
-.card .ctitle {
-  font-size: clamp(10px, 1.3vw, 15px);
-  font-weight: 800;
-  color: var(--white);
-  margin-bottom: 4%;
-}
-.card .ctext {
-  font-size: clamp(8px, 1vw, 12px);
-  color: var(--muted2);
-  line-height: 1.7;
-}
-.card .badge {
-  margin-top: 8%;
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(7px, 0.8vw, 10px);
-  padding: 2% 5%;
-  border-radius: 4px;
-  background: rgba(251,146,60,0.1);
-  border: 1px solid rgba(251,146,60,0.25);
-  color: var(--orange);
-  letter-spacing: 0.06em;
-}
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(240,92,42,0.6), transparent);
+  #s4 .big-stat { text-align: center; }
+  #s4 .big-num { font-size: clamp(28px,5.5vw,64px); font-weight: 800; color: var(--gold); letter-spacing: -0.04em; line-height: 1; margin-bottom: 6%; }
+  #s4 .big-label { font-family: 'JetBrains Mono', monospace; font-size: clamp(6px,0.75vw,9px); letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; line-height: 1.6; }
+  #s4 .result-card { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 8% 5%; }
+
+  #s5 .feat-card { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 5% 5%; transition: border-color 0.2s, transform 0.2s; }
+  #s5 .feat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+  #s5 .feat-icon { width: clamp(28px,3.5vw,44px); height: clamp(28px,3.5vw,44px); border-radius: 8px; background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.15); display: flex; align-items: center; justify-content: center; font-size: clamp(14px,1.8vw,20px); margin-bottom: 5%; }
+  #s5 .feat-title { font-size: clamp(9px,1.1vw,13px); font-weight: 800; color: var(--white); margin-bottom: 3%; }
+  #s5 .feat-text { font-size: clamp(7px,0.85vw,10.5px); color: var(--muted2); line-height: 1.7; }
+  #s5 .feat-tag { margin-top: 5%; font-family: 'JetBrains Mono', monospace; font-size: clamp(6px,0.7vw,9px); letter-spacing: 0.1em; color: var(--green); text-transform: uppercase; }
+
+  #s6 .arch-flow { display: grid; grid-template-columns: 1fr 28px 1fr 28px 1fr 28px 1fr; align-items: center; gap: 0; margin-top: 3%; }
+  #s6 .arch-box { border: 1px solid var(--border); background: var(--surface); border-radius: 8px; padding: 4% 4%; }
+  #s6 .arch-box.gold { border-color: var(--gold); background: rgba(240,192,64,0.04); }
+  #s6 .arch-box.green { border-color: var(--green); background: rgba(52,211,153,0.04); }
+  #s6 .arch-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: clamp(10px,1.2vw,14px); }
+  #s6 .arch-label { font-family: 'JetBrains Mono', monospace; font-size: clamp(6px,0.7vw,8px); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4%; }
+  #s6 .arch-name { font-size: clamp(9px,1.1vw,13px); font-weight: 800; color: var(--white); margin-bottom: 3%; }
+  #s6 .arch-detail { font-size: clamp(7px,0.8vw,10px); color: var(--muted2); line-height: 1.6; }
+  #s6 .chip { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: clamp(5px,0.6vw,7px); padding: 1px 4px; border-radius: 3px; font-weight: 500; vertical-align: middle; margin: 0 1px; }
+  #s6 .chip-sms { background: rgba(246,173,85,0.18); color: #fbd38d; }
+  #s6 .chip-mail { background: rgba(252,129,74,0.18); color: #fbd38d; }
+  #s6 .dept-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1%; margin-top: 2%; }
+  #s6 .dept-box { border-radius: 7px; padding: 4% 4%; font-size: clamp(7px,0.8vw,10px); color: rgba(255,255,255,0.65); line-height: 1.5; }
+  #s6 .dept-box.parts { border: 1px solid var(--blue); background: rgba(56,189,248,0.05); }
+  #s6 .dept-box.service { border: 1px solid var(--purple); background: rgba(167,139,250,0.05); }
+  #s6 .dept-box.sales { border: 1px solid var(--orange); background: rgba(251,146,60,0.05); }
+  #s6 .dept-name { font-weight: 800; color: var(--white); margin-bottom: 3%; font-size: clamp(8px,0.95vw,11px); }
+
+  .step-flow { display: flex; flex-direction: column; gap: 4%; }
+  .step-item { display: flex; gap: 3%; align-items: flex-start; }
+  .step-num { width: clamp(28px,3.5vw,44px); height: clamp(28px,3.5vw,44px); border-radius: 10px; border: 1px solid var(--border2); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: clamp(8px,1vw,12px); color: var(--gold); flex-shrink: 0; }
+  .step-content { padding-top: 0.5%; }
+  .step-title { font-size: clamp(10px,1.3vw,15px); font-weight: 800; color: var(--white); margin-bottom: 1.5%; }
+  .step-text { font-size: clamp(8px,0.9vw,11px); color: var(--muted2); line-height: 1.7; }
+
+  #s7 { align-items: center; text-align: center; }
+  #s7 .glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 80%; height: 60%; background: radial-gradient(ellipse, rgba(240,192,64,0.05) 0%, transparent 70%); pointer-events: none; }
+  #s7 h2 { font-size: clamp(22px,4.5vw,56px); text-align: center; max-width: 80%; margin: 0 auto 2%; }
+  #s7 .sub { max-width: 55%; margin: 0 auto; text-align: center; }
+
+  #nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; z-index: 100; }
+  #nav button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border2); background: rgba(13,17,23,0.9); color: var(--muted2); font-size: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+  #nav button:hover { border-color: var(--gold); color: var(--gold); }
+  #nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+  #dots { display: flex; gap: 7px; align-items: center; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border2); transition: all 0.3s; cursor: pointer; }
+  .dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
+  #slide-counter { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; min-width: 36px; text-align: center; }
+
+  #progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); transition: width 0.4s ease; z-index: 200; }
+
+  .slide.active .anim { animation: slidein 0.5s ease both; }
+  .slide.active .anim-1 { animation-delay: 0.05s; }
+  .slide.active .anim-2 { animation-delay: 0.12s; }
+  .slide.active .anim-3 { animation-delay: 0.2s; }
+  .slide.active .anim-4 { animation-delay: 0.28s; }
+  @keyframes slidein { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 }
 
-/* SLIDE 1 */
-#s1 { justify-content: center; }
-#s1 .glow {
-  position: absolute;
-  top: 15%; left: 50%; transform: translateX(-50%);
-  width: 60%; height: 40%;
-  background: radial-gradient(ellipse, rgba(240,192,64,0.07) 0%, transparent 70%);
-  pointer-events: none;
-}
-#s1 .tag {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(7px, 0.9vw, 10px);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid rgba(240,192,64,0.25);
-  background: rgba(240,192,64,0.05);
-  padding: 0.5% 1.5%;
-  border-radius: 100px;
-  margin-bottom: 3%;
-  width: fit-content;
-}
-#s1 .tag-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--gold);
-  animation: blink 2s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+/* ══════════════════════════════════════
+   MOBILE — scrollable cards
+══════════════════════════════════════ */
+@media (max-width: 767px) {
+  #desktop-view { display: none; }
+  #nav { display: none; }
+  #progress { display: none; }
 
-#s1 .stats {
-  display: flex; gap: 2%;
-  margin-top: 5%;
-  padding-top: 4%;
-  border-top: 1px solid var(--border);
-}
-#s1 .stat-num {
-  font-size: clamp(18px, 3.5vw, 40px);
-  font-weight: 800;
-  color: var(--white);
-  letter-spacing: -0.03em;
-  line-height: 1;
-  margin-bottom: 3%;
-}
-#s1 .stat-num span { color: var(--gold); }
-#s1 .stat-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(6px, 0.75vw, 9px);
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  text-transform: uppercase;
-  line-height: 1.5;
-}
+  #mobile-view { display: block; background: var(--bg); min-height: 100vh; }
+  #mobile-view::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 28px 28px; pointer-events: none; z-index: 0; }
 
-/* SLIDE 4 RESULTS */
-#s4 .big-stat { text-align: center; }
-#s4 .big-num {
-  font-size: clamp(28px, 5.5vw, 64px);
-  font-weight: 800;
-  color: var(--gold);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 6%;
-}
-#s4 .big-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(6px, 0.75vw, 9px);
-  letter-spacing: 0.12em;
-  color: var(--muted);
-  text-transform: uppercase;
-  line-height: 1.6;
-}
-#s4 .result-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 10px;
-  padding: 8% 5%;
-}
+  .m-prog { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: var(--border); z-index: 100; }
+  .m-prog-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s ease; }
 
-/* SLIDE 5 FEATURES */
-#s5 .feat-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 10px;
-  padding: 5% 5%;
-  transition: border-color 0.2s, transform 0.2s;
-}
-#s5 .feat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
-#s5 .feat-icon {
-  width: clamp(28px, 3.5vw, 44px);
-  height: clamp(28px, 3.5vw, 44px);
-  border-radius: 8px;
-  background: rgba(240,192,64,0.08);
-  border: 1px solid rgba(240,192,64,0.15);
-  display: flex; align-items: center; justify-content: center;
-  font-size: clamp(14px, 1.8vw, 20px);
-  margin-bottom: 5%;
-}
-#s5 .feat-title { font-size: clamp(9px, 1.1vw, 13px); font-weight: 800; color: var(--white); margin-bottom: 3%; }
-#s5 .feat-text { font-size: clamp(7px, 0.85vw, 10.5px); color: var(--muted2); line-height: 1.7; }
-#s5 .feat-tag {
-  margin-top: 5%;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(6px, 0.7vw, 9px);
-  letter-spacing: 0.1em; color: var(--green); text-transform: uppercase;
-}
+  .m-slide { position: relative; z-index: 1; padding: 72px 22px 56px; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--border); }
+  .m-slide:last-child { border-bottom: none; }
+  .m-slide-num { position: absolute; top: 22px; right: 22px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
 
-/* SLIDE 6 ARCH */
-#s6 .arch-flow {
-  display: grid;
-  grid-template-columns: 1fr 28px 1fr 28px 1fr 28px 1fr;
-  align-items: center;
-  gap: 0;
-  margin-top: 3%;
-}
-#s6 .arch-box {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 8px;
-  padding: 4% 4%;
-}
-#s6 .arch-box.gold { border-color: var(--gold); background: rgba(240,192,64,0.04); }
-#s6 .arch-box.green { border-color: var(--green); background: rgba(52,211,153,0.04); }
-#s6 .arch-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: clamp(10px, 1.2vw, 14px); }
-#s6 .arch-label { font-family: 'JetBrains Mono', monospace; font-size: clamp(6px, 0.7vw, 8px); letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4%; }
-#s6 .arch-name { font-size: clamp(9px, 1.1vw, 13px); font-weight: 800; color: var(--white); margin-bottom: 3%; }
-#s6 .arch-detail { font-size: clamp(7px, 0.8vw, 10px); color: var(--muted2); line-height: 1.6; }
-#s6 .chip { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: clamp(5px, 0.6vw, 7px); padding: 1px 4px; border-radius: 3px; font-weight: 500; letter-spacing: 0.04em; vertical-align: middle; margin: 0 1px; }
-#s6 .chip-sheet { background: rgba(72,187,120,0.18); color: #9ae6b4; }
-#s6 .chip-sms { background: rgba(246,173,85,0.18); color: #fbd38d; }
-#s6 .chip-mail { background: rgba(252,129,74,0.18); color: #fbd38d; }
-#s6 .dept-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 1%; margin-top: 2%; }
-#s6 .dept-box { border-radius: 7px; padding: 4% 4%; font-size: clamp(7px, 0.8vw, 10px); color: rgba(255,255,255,0.65); line-height: 1.5; }
-#s6 .dept-box.parts { border: 1px solid var(--blue); background: rgba(56,189,248,0.05); }
-#s6 .dept-box.service { border: 1px solid var(--purple); background: rgba(167,139,250,0.05); }
-#s6 .dept-box.sales { border: 1px solid var(--orange); background: rgba(251,146,60,0.05); }
-#s6 .dept-name { font-weight: 800; color: var(--white); margin-bottom: 3%; font-size: clamp(8px, 0.95vw, 11px); }
+  .m-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .m-h1 { font-size: 36px; font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; color: var(--white); margin-bottom: 16px; }
+  .m-h1 .g { color: var(--gold); }
+  .m-h2 { font-size: 26px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; color: var(--white); margin-bottom: 12px; }
+  .m-h2 .g { color: var(--gold); }
+  .m-sub { font-size: 15px; color: var(--muted2); line-height: 1.7; margin-bottom: 28px; }
 
-/* STEP FLOW */
-.step-flow { display: flex; flex-direction: column; gap: 4%; }
-.step-item { display: flex; gap: 3%; align-items: flex-start; }
-.step-num {
-  width: clamp(28px, 3.5vw, 44px);
-  height: clamp(28px, 3.5vw, 44px);
-  border-radius: 10px;
-  border: 1px solid var(--border2);
-  background: var(--surface2);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(8px, 1vw, 12px);
-  color: var(--gold);
-  flex-shrink: 0;
-}
-.step-content { padding-top: 0.5%; }
-.step-title { font-size: clamp(10px, 1.3vw, 15px); font-weight: 800; color: var(--white); margin-bottom: 1.5%; }
-.step-text { font-size: clamp(8px, 0.9vw, 11px); color: var(--muted2); line-height: 1.7; }
+  .m-tag { display: inline-flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(240,192,64,0.25); background: rgba(240,192,64,0.05); padding: 7px 14px; border-radius: 100px; margin-bottom: 20px; width: fit-content; }
+  .m-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: mblink 2s ease-in-out infinite; }
+  @keyframes mblink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-/* CTA */
-#s7 { align-items: center; text-align: center; }
-#s7 .glow {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%; height: 60%;
-  background: radial-gradient(ellipse, rgba(240,192,64,0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-#s7 h2 { font-size: clamp(22px, 4.5vw, 56px); text-align: center; max-width: 80%; margin: 0 auto 2%; }
-#s7 .sub { max-width: 55%; margin: 0 auto 0; text-align: center; }
+  .m-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--border); }
+  .m-stat-num { font-size: 26px; font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1; margin-bottom: 4px; }
+  .m-stat-num span { color: var(--gold); }
+  .m-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; line-height: 1.5; }
 
-/* NAV */
-#nav {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 12px;
-  z-index: 100;
-}
-#nav button {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--border2);
-  background: rgba(13,17,23,0.9);
-  color: var(--muted2);
-  font-size: 14px; cursor: pointer;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px);
-}
-#nav button:hover { border-color: var(--gold); color: var(--gold); }
-#nav button:disabled { opacity: 0.3; cursor: not-allowed; }
-#dots { display: flex; gap: 7px; align-items: center; }
-.dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--border2);
-  transition: all 0.3s;
-  cursor: pointer;
-}
-.dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
-#slide-counter {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; color: var(--muted);
-  letter-spacing: 0.1em; min-width: 36px; text-align: center;
-}
+  .m-card { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 18px; margin-bottom: 10px; position: relative; overflow: hidden; }
+  .m-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(240,92,42,0.6), transparent); }
+  .m-card-num { font-family: 'JetBrains Mono', monospace; font-size: 30px; color: rgba(255,255,255,0.04); font-weight: 400; line-height: 1; margin-bottom: 8px; }
+  .m-card-title { font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 7px; }
+  .m-card-text { font-size: 14px; color: var(--muted2); line-height: 1.7; }
+  .m-badge { margin-top: 12px; display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 5px 10px; border-radius: 4px; background: rgba(251,146,60,0.1); border: 1px solid rgba(251,146,60,0.25); color: var(--orange); }
 
-.slide.active .anim { animation: slidein 0.5s ease both; }
-.slide.active .anim-1 { animation-delay: 0.05s; }
-.slide.active .anim-2 { animation-delay: 0.12s; }
-.slide.active .anim-3 { animation-delay: 0.2s; }
-.slide.active .anim-4 { animation-delay: 0.28s; }
-@keyframes slidein {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+  .m-steps { display: flex; flex-direction: column; gap: 18px; }
+  .m-step { display: flex; gap: 14px; align-items: flex-start; }
+  .m-step-num { width: 36px; height: 36px; border-radius: 9px; border: 1px solid var(--border2); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--gold); flex-shrink: 0; }
+  .m-step-title { font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 5px; }
+  .m-step-text { font-size: 14px; color: var(--muted2); line-height: 1.65; }
 
-#progress {
-  position: fixed; top: 0; left: 0;
-  height: 2px;
-  background: var(--gold);
-  transition: width 0.4s ease;
-  z-index: 200;
+  .m-results { display: flex; flex-direction: column; gap: 10px; }
+  .m-result { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; }
+  .m-result-num { font-size: 34px; font-weight: 800; color: var(--gold); letter-spacing: -0.04em; line-height: 1; flex-shrink: 0; min-width: 86px; }
+  .m-result-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; line-height: 1.6; }
+  .m-tagline { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-align: center; line-height: 1.7; margin-top: 22px; }
+
+  .m-feat { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 18px; margin-bottom: 10px; }
+  .m-feat-icon { width: 40px; height: 40px; border-radius: 8px; background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.15); display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 12px; }
+  .m-feat-title { font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 6px; }
+  .m-feat-text { font-size: 14px; color: var(--muted2); line-height: 1.7; }
+  .m-feat-tag { margin-top: 10px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; color: var(--green); text-transform: uppercase; }
+
+  .m-arch { display: flex; flex-direction: column; }
+  .m-arch-box { border: 1px solid var(--border); background: var(--surface); border-radius: 10px; padding: 16px; }
+  .m-arch-box.gold { border-color: var(--gold); background: rgba(240,192,64,0.04); }
+  .m-arch-box.green { border-color: var(--green); background: rgba(52,211,153,0.04); }
+  .m-arch-arrow { display: flex; justify-content: center; padding: 6px 0; color: var(--muted); font-size: 16px; }
+  .m-arch-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .m-arch-name { font-size: 15px; font-weight: 800; color: var(--white); margin-bottom: 5px; }
+  .m-arch-detail { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+  .m-chip { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 8px; padding: 1px 5px; border-radius: 3px; font-weight: 500; vertical-align: middle; margin: 0 1px; }
+  .m-chip-sms { background: rgba(246,173,85,0.18); color: #fbd38d; }
+  .m-chip-mail { background: rgba(252,129,74,0.18); color: #fbd38d; }
+
+  .m-dept { border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .m-dept.parts { border: 1px solid var(--blue); background: rgba(56,189,248,0.05); }
+  .m-dept.service { border: 1px solid var(--purple); background: rgba(167,139,250,0.05); }
+  .m-dept.sales { border: 1px solid var(--orange); background: rgba(251,146,60,0.05); }
+  .m-dept-name { font-size: 13px; font-weight: 800; color: var(--white); margin-bottom: 5px; }
+  .m-dept-text { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+  .m-cta { text-align: center; }
+
+  /* scroll reveal */
+  .m-reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .m-reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* scroll hint */
+  .m-hint { position: fixed; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; transition: opacity 0.4s; z-index: 50; pointer-events: none; }
+  .m-hint.gone { opacity: 0; }
 }
 </style>
 </head>
@@ -378,35 +233,19 @@ h2 .g { color: var(--gold); }
 
 <div id="progress"></div>
 
-<div id="stage">
-<div class="deck">
+<!-- ════════════ DESKTOP ════════════ -->
+<div id="desktop-view">
+<div id="stage"><div class="deck">
 
-  <!-- SLIDE 1: TITLE -->
   <div class="slide active" id="s1">
     <div class="glow"></div>
-    <div class="tag anim anim-1">
-      <div class="tag-dot"></div>
-      Automotive Dealerships
-    </div>
-    <h1 class="anim anim-2">
-      While you're closed,<br>
-      <span class="g">someone else</span><br>
-      <span style="color:var(--muted)">is answering.</span>
-    </h1>
+    <div class="tag anim anim-1"><div class="tag-dot"></div>Automotive Dealerships</div>
+    <h1 class="anim anim-2">While you're closed,<br><span class="g">someone else</span><br><span style="color:var(--muted)">is answering.</span></h1>
     <p class="sub anim anim-3">Customers don't wait until morning. They call, they don't get an answer, and they move on — usually to the first dealership that picks up. That's the whole game.</p>
     <div class="stats anim anim-4">
-      <div>
-        <div class="stat-num">0<span>%</span></div>
-        <div class="stat-label">Leads Lost<br>After Hours</div>
-      </div>
-      <div>
-        <div class="stat-num">24<span>/7</span></div>
-        <div class="stat-label">AI Coverage<br>Always On</div>
-      </div>
-      <div>
-        <div class="stat-num">3</div>
-        <div class="stat-label">Department<br>Agents</div>
-      </div>
+      <div><div class="stat-num">0<span>%</span></div><div class="stat-label">Leads Lost<br>After Hours</div></div>
+      <div><div class="stat-num">24<span>/7</span></div><div class="stat-label">AI Coverage<br>Always On</div></div>
+      <div><div class="stat-num">3</div><div class="stat-label">Department<br>Agents</div></div>
     </div>
   </div>
 
@@ -415,28 +254,12 @@ h2 .g { color: var(--gold); }
     <h2 class="anim anim-2">First to respond <span class="g">wins the sale.</span><br>After 7pm, that's not you.</h2>
     <p class="sub anim anim-3">Customers shop on their schedule, not yours. When they call after hours and nobody answers, they don't leave a message and wait — they call the next dealership on the list.</p>
     <div class="grid-3 anim anim-4">
-      <div class="card">
-        <div class="num">01</div>
-        <div class="ctitle">They're Not Waiting Until Morning</div>
-        <div class="ctext">A customer sees your listing at 8pm, calls, gets voicemail, and moves on. By 9am they've already booked a test drive somewhere else. You paid for that lead. Your competitor closed it.</div>
-        <span class="badge">Revenue you'll never know you missed</span>
-      </div>
-      <div class="card">
-        <div class="num">02</div>
-        <div class="ctitle">Cold Leads, Wasted Time</div>
-        <div class="ctext">When your team does get to voicemails the next day, the customer has moved on mentally — or physically. Cold-calling a name and number with no context is a long shot at best.</div>
-        <span class="badge">Hours of wasted sales time</span>
-      </div>
-      <div class="card">
-        <div class="num">03</div>
-        <div class="ctitle">No Trace, No Recovery</div>
-        <div class="ctext">If someone hangs up without leaving a message, they vanish completely. No record, no follow-up, no second shot. The lead is gone and you don't even know it existed.</div>
-        <span class="badge">Silent revenue leak</span>
-      </div>
+      <div class="card"><div class="num">01</div><div class="ctitle">They're Not Waiting Until Morning</div><div class="ctext">A customer sees your listing at 8pm, calls, gets voicemail, and moves on. By 9am they've already booked a test drive somewhere else. You paid for that lead. Your competitor closed it.</div><span class="badge">Revenue you'll never know you missed</span></div>
+      <div class="card"><div class="num">02</div><div class="ctitle">Cold Leads, Wasted Time</div><div class="ctext">When your team does get to voicemails the next day, the customer has moved on mentally — or physically. Cold-calling a name and number with no context is a long shot at best.</div><span class="badge">Hours of wasted sales time</span></div>
+      <div class="card"><div class="num">03</div><div class="ctitle">No Trace, No Recovery</div><div class="ctext">If someone hangs up without leaving a message, they vanish completely. No record, no follow-up, no second shot. The lead is gone and you don't even know it existed.</div><span class="badge">Silent revenue leak</span></div>
     </div>
   </div>
 
-  <!-- SLIDE 3: HOW IT WORKS -->
   <div class="slide" id="s3">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6%;align-items:center;height:100%;">
       <div>
@@ -445,159 +268,58 @@ h2 .g { color: var(--gold); }
         <p class="sub anim anim-3" style="max-width:100%;margin-bottom:0">Sits on top of your existing phone setup. Calls forward to it after 7pm, and it takes it from there — qualifying leads, notifying managers, and following up automatically.</p>
       </div>
       <div class="step-flow anim anim-4">
-        <div class="step-item">
-          <div class="step-num">01</div>
-          <div class="step-content">
-            <div class="step-title">Call Comes In</div>
-            <div class="step-text">An AI answers every call 24/7 — no voicemail, no hold music. During business hours it routes to live staff. After hours, it handles the call itself and passes it to the right department agent.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">02</div>
-          <div class="step-content">
-            <div class="step-title">Lead Gets Qualified</div>
-            <div class="step-text">The AI has a real conversation — no hold music, no press-1 menus. It collects name, number, what they need, and scores their urgency.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">03</div>
-          <div class="step-content">
-            <div class="step-title">Manager Gets Notified</div>
-            <div class="step-text">The right department manager gets an email within minutes — caller name, number, what they want, and a Hot / Warm / Cold score. Ready to act on, not dig through.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">04</div>
-          <div class="step-content">
-            <div class="step-title">Nobody Slips Through</div>
-            <div class="step-text">Callers who hang up without leaving info get an automatic SMS follow-up. The AI qualifies them over text before a human ever gets involved.</div>
-          </div>
-        </div>
+        <div class="step-item"><div class="step-num">01</div><div class="step-content"><div class="step-title">Call Comes In</div><div class="step-text">An AI answers every call 24/7 — no voicemail, no hold music. During business hours it routes to live staff. After hours, it handles the call and passes it to the right department agent.</div></div></div>
+        <div class="step-item"><div class="step-num">02</div><div class="step-content"><div class="step-title">Lead Gets Qualified</div><div class="step-text">The AI has a real conversation — no press-1 menus. It collects name, number, what they need, and scores their urgency.</div></div></div>
+        <div class="step-item"><div class="step-num">03</div><div class="step-content"><div class="step-title">Manager Gets Notified</div><div class="step-text">The right department manager gets an email within minutes — name, number, what they want, and a Hot / Warm / Cold score. Ready to act on, not dig through.</div></div></div>
+        <div class="step-item"><div class="step-num">04</div><div class="step-content"><div class="step-title">Nobody Slips Through</div><div class="step-text">Callers who hang up without leaving info get an automatic SMS follow-up. The AI qualifies them over text before a human ever gets involved.</div></div></div>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 4: RESULTS -->
   <div class="slide" id="s4">
     <div class="eyebrow anim anim-1">The Numbers</div>
     <h2 class="anim anim-2">You answer first. <span class="g">You win more.</span></h2>
     <div class="grid-3 anim anim-3" style="margin-top:4%">
-      <div class="result-card">
-        <div class="big-stat">
-          <div class="big-num">100%</div>
-          <div class="big-label">Of after-hours<br>calls answered</div>
-        </div>
-      </div>
-      <div class="result-card">
-        <div class="big-stat">
-          <div class="big-num">~2min</div>
-          <div class="big-label">Time to manager<br>notification</div>
-        </div>
-      </div>
-      <div class="result-card">
-        <div class="big-stat">
-          <div class="big-num">3x</div>
-          <div class="big-label">Departments covered<br>simultaneously</div>
-        </div>
-      </div>
+      <div class="result-card"><div class="big-stat"><div class="big-num">100%</div><div class="big-label">Of after-hours<br>calls answered</div></div></div>
+      <div class="result-card"><div class="big-stat"><div class="big-num">~2min</div><div class="big-label">Time to manager<br>notification</div></div></div>
+      <div class="result-card"><div class="big-stat"><div class="big-num">3x</div><div class="big-label">Departments covered<br>simultaneously</div></div></div>
     </div>
     <p class="anim anim-4" style="margin-top:4%;font-family:'JetBrains Mono',monospace;font-size:clamp(8px,0.9vw,11px);color:var(--muted);letter-spacing:0.08em;text-align:center">Same ad spend. Same listings. Just fewer leads walking out the door.</p>
   </div>
 
-  <!-- SLIDE 5: FEATURES -->
   <div class="slide" id="s5">
     <div class="eyebrow anim anim-1">What's Included</div>
     <h2 class="anim anim-2">Everything needed to <span class="g">stop losing ground.</span></h2>
     <div class="grid-3 anim anim-3" style="margin-top:3%">
-      <div class="feat-card">
-        <div class="feat-icon">🎙️</div>
-        <div class="feat-title">Voice AI That Holds a Conversation</div>
-        <div class="feat-text">Powered by ElevenLabs. Natural-sounding, responsive, and far better than a voicemail — callers get answers and leave their details instead of hanging up.</div>
-        <div class="feat-tag">↳ Powered by ElevenLabs</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🔀</div>
-        <div class="feat-title">Department-Level Routing</div>
-        <div class="feat-text">Dedicated lines for Parts, Service, and Sales. Each has its own agent, its own qualification logic, and its own notification chain. Nothing gets cross-wired.</div>
-        <div class="feat-tag">↳ Independent per dept</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">⚡</div>
-        <div class="feat-title">Instant Manager Alerts</div>
-        <div class="feat-text">The right manager gets an email the moment a call ends — name, number, what they need, and a lead score. Your team starts the day with context, not catch-up.</div>
-        <div class="feat-tag">↳ Via Gmail</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">💬</div>
-        <div class="feat-title">Automatic SMS Follow-Up</div>
-        <div class="feat-text">Callers who hang up without leaving info get a follow-up text automatically. The AI qualifies them over SMS and hands your team a warm lead — not a cold number to chase.</div>
-        <div class="feat-tag">↳ Via Twilio</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">🛡️</div>
-        <div class="feat-title">Compliance Built In</div>
-        <div class="feat-text">STOP / opt-out detection is automatic. Anyone who opts out is logged immediately and never contacted again. No manual list management required.</div>
-        <div class="feat-tag">↳ Do Not Contact list</div>
-      </div>
-      <div class="feat-card">
-        <div class="feat-icon">📊</div>
-        <div class="feat-title">Runs Alongside Your Existing Stack</div>
-        <div class="feat-text">Works with CDK, DealerSocket, VinSolutions, or whatever you're running. Leads are tracked in a central data source with a duplicate-contact guard — no disruption to current workflows.</div>
-        <div class="feat-tag">↳ CRM-agnostic</div>
-      </div>
+      <div class="feat-card"><div class="feat-icon">🎙️</div><div class="feat-title">Voice AI That Holds a Conversation</div><div class="feat-text">Powered by ElevenLabs. Natural-sounding, responsive, and far better than a voicemail — callers get answers and leave their details instead of hanging up.</div><div class="feat-tag">↳ Powered by ElevenLabs</div></div>
+      <div class="feat-card"><div class="feat-icon">🔀</div><div class="feat-title">Department-Level Routing</div><div class="feat-text">Dedicated lines for Parts, Service, and Sales. Each has its own agent, qualification logic, and notification chain. Nothing gets cross-wired.</div><div class="feat-tag">↳ Independent per dept</div></div>
+      <div class="feat-card"><div class="feat-icon">⚡</div><div class="feat-title">Instant Manager Alerts</div><div class="feat-text">The right manager gets an email the moment a call ends — name, number, what they need, and a lead score. Your team starts the day with context, not catch-up.</div><div class="feat-tag">↳ Via Gmail</div></div>
+      <div class="feat-card"><div class="feat-icon">💬</div><div class="feat-title">Automatic SMS Follow-Up</div><div class="feat-text">Callers who hang up without leaving info get a follow-up text automatically. The AI qualifies them over SMS and hands your team a warm lead — not a cold number to chase.</div><div class="feat-tag">↳ Via Twilio</div></div>
+      <div class="feat-card"><div class="feat-icon">🛡️</div><div class="feat-title">Compliance Built In</div><div class="feat-text">STOP / opt-out detection is automatic. Anyone who opts out is logged immediately and never contacted again. No manual list management required.</div><div class="feat-tag">↳ Do Not Contact list</div></div>
+      <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Runs Alongside Your Existing Stack</div><div class="feat-text">Works with CDK, DealerSocket, VinSolutions, or whatever you're running. Leads tracked in a central data source with a duplicate-contact guard — no disruption to current workflows.</div><div class="feat-tag">↳ CRM-agnostic</div></div>
     </div>
   </div>
 
-  <!-- SLIDE 6: ARCHITECTURE -->
   <div class="slide" id="s6">
     <div class="eyebrow anim anim-1">Under the Hood</div>
     <h2 class="anim anim-2" style="margin-bottom:1%">From first ring to <span class="g">manager's inbox.</span></h2>
-
     <div class="arch-flow anim anim-3">
-      <div class="arch-box gold">
-        <div class="arch-label">Phone</div>
-        <div class="arch-name">Twilio</div>
-        <div class="arch-detail">4 dedicated numbers — one per dept. Calls routed to ElevenLabs after hours.</div>
-      </div>
+      <div class="arch-box gold"><div class="arch-label">Phone</div><div class="arch-name">Twilio</div><div class="arch-detail">4 dedicated numbers — one per dept. Calls routed to ElevenLabs after hours.</div></div>
       <div class="arch-arrow">→</div>
-      <div class="arch-box gold">
-        <div class="arch-label">Voice AI</div>
-        <div class="arch-name">ElevenLabs</div>
-        <div class="arch-detail">Handles the voice conversation. Fires a webhook to n8n on call end — passing caller phone # as the lookup key.</div>
-      </div>
+      <div class="arch-box gold"><div class="arch-label">Voice AI</div><div class="arch-name">ElevenLabs</div><div class="arch-detail">Handles the voice conversation. Fires a webhook to n8n on call end — passing caller phone # as the lookup key.</div></div>
       <div class="arch-arrow">→</div>
-      <div class="arch-box">
-        <div class="arch-label">Orchestration</div>
-        <div class="arch-name">n8n</div>
-        <div class="arch-detail">Routes to the right dept workflow. Runs GPT-4.1 to qualify the lead. Checks for duplicate contacts in the data source.</div>
-      </div>
+      <div class="arch-box"><div class="arch-label">Orchestration</div><div class="arch-name">n8n</div><div class="arch-detail">Routes to the right dept workflow. Runs GPT-4.1 to qualify the lead. Checks for duplicate contacts in the data source.</div></div>
       <div class="arch-arrow">→</div>
-      <div class="arch-box green">
-        <div class="arch-label">Output</div>
-        <div class="arch-name">Email + SMS</div>
-        <div class="arch-detail">Manager notified via Gmail. Caller gets a confirmation SMS. Lead logged to the data source. <span class="chip chip-mail">GMAIL</span> <span class="chip chip-sms">SMS</span> </div>
-      </div>
+      <div class="arch-box green"><div class="arch-label">Output</div><div class="arch-name">Email + SMS</div><div class="arch-detail">Manager notified via Gmail. Caller gets a confirmation SMS. Lead logged to the data source. <span class="chip chip-mail">GMAIL</span> <span class="chip chip-sms">SMS</span></div></div>
     </div>
-
     <div style="margin-top:2%;font-family:'JetBrains Mono',monospace;font-size:clamp(6px,0.7vw,8px);letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1%" class="anim anim-3">↓ After hours — per department</div>
-
     <div class="dept-row anim anim-4">
-      <div class="dept-box parts">
-        <div class="dept-name">🔧 Parts Agent</div>
-        Qualifies caller → logs to the data source → emails Parts mgmt → sends confirmation SMS → enters follow-up queue if no info collected
-      </div>
-      <div class="dept-box service">
-        <div class="dept-name">🛠️ Service Agent</div>
-        Qualifies caller → logs to the data source → emails Service mgmt → sends confirmation SMS → enters follow-up queue if no info collected
-      </div>
-      <div class="dept-box sales">
-        <div class="dept-name">💼 Sales Agent</div>
-        Qualifies caller → scores lead Hot / Warm / Cold → emails Sales mgmt → SMS → follow-up queue if no info collected
-      </div>
+      <div class="dept-box parts"><div class="dept-name">🔧 Parts Agent</div>Qualifies caller → logs to the data source → emails Parts mgmt → sends confirmation SMS → enters follow-up queue if no info collected</div>
+      <div class="dept-box service"><div class="dept-name">🛠️ Service Agent</div>Qualifies caller → logs to the data source → emails Service mgmt → sends confirmation SMS → enters follow-up queue if no info collected</div>
+      <div class="dept-box sales"><div class="dept-name">💼 Sales Agent</div>Qualifies caller → scores lead Hot / Warm / Cold → emails Sales mgmt → SMS → follow-up queue if no info collected</div>
     </div>
   </div>
 
-  <!-- SLIDE 7: CTA -->
   <div class="slide" id="s7">
     <div class="glow"></div>
     <div class="eyebrow anim anim-1" style="text-align:center;display:block">The Bottom Line</div>
@@ -605,8 +327,7 @@ h2 .g { color: var(--gold); }
     <p class="sub anim anim-3">Every unanswered call after 7pm is a lead that paid off for someone else. This closes that gap — and your team, your CRM, and your day-to-day don't change at all.</p>
   </div>
 
-</div><!-- .deck -->
-</div><!-- #stage -->
+</div></div></div>
 
 <div id="nav">
   <button id="btn-prev" onclick="go(-1)" disabled>←</button>
@@ -615,11 +336,109 @@ h2 .g { color: var(--gold); }
   <div id="slide-counter">1 / 7</div>
 </div>
 
+<!-- ════════════ MOBILE ════════════ -->
+<div id="mobile-view">
+  <div class="m-prog"><div class="m-prog-bar" id="mpb"></div></div>
+  <div class="m-hint" id="mhint">scroll to continue ↓</div>
+
+  <div class="m-slide" id="ms1">
+    <div class="m-slide-num">1 / 7</div>
+    <div class="m-tag m-reveal"><div class="m-tag-dot"></div>Automotive Dealerships</div>
+    <div class="m-h1 m-reveal">While you're closed,<br><span class="g">someone else</span><br><span style="color:var(--muted)">is answering.</span></div>
+    <p class="m-sub m-reveal">Customers don't wait until morning. They call, they don't get an answer, and they move on — usually to the first dealership that picks up. That's the whole game.</p>
+    <div class="m-stats m-reveal">
+      <div><div class="m-stat-num">0<span>%</span></div><div class="m-stat-label">Leads Lost<br>After Hours</div></div>
+      <div><div class="m-stat-num">24<span>/7</span></div><div class="m-stat-label">AI Coverage<br>Always On</div></div>
+      <div><div class="m-stat-num">3</div><div class="m-stat-label">Dept<br>Agents</div></div>
+    </div>
+  </div>
+
+  <div class="m-slide" id="ms2">
+    <div class="m-slide-num">2 / 7</div>
+    <div class="m-eyebrow m-reveal">The Problem</div>
+    <div class="m-h2 m-reveal">First to respond <span class="g">wins the sale.</span> After 7pm, that's not you.</div>
+    <p class="m-sub m-reveal">Customers shop on their schedule, not yours. When they call and nobody answers, they don't wait — they call the next dealership on the list.</p>
+    <div class="m-reveal">
+      <div class="m-card"><div class="m-card-num">01</div><div class="m-card-title">They're Not Waiting Until Morning</div><div class="m-card-text">A customer sees your listing at 8pm, calls, gets voicemail, and moves on. By 9am they've already booked a test drive somewhere else. You paid for that lead. Your competitor closed it.</div><div class="m-badge">Revenue you'll never know you missed</div></div>
+      <div class="m-card"><div class="m-card-num">02</div><div class="m-card-title">Cold Leads, Wasted Time</div><div class="m-card-text">When your team does get to voicemails the next day, the customer has moved on. Cold-calling a name and number with no context is a long shot at best.</div><div class="m-badge">Hours of wasted sales time</div></div>
+      <div class="m-card"><div class="m-card-num">03</div><div class="m-card-title">No Trace, No Recovery</div><div class="m-card-text">If someone hangs up without leaving a message, they vanish. No record, no follow-up, no second shot. Gone before you knew they called.</div><div class="m-badge">Silent revenue leak</div></div>
+    </div>
+  </div>
+
+  <div class="m-slide" id="ms3">
+    <div class="m-slide-num">3 / 7</div>
+    <div class="m-eyebrow m-reveal">The Fix</div>
+    <div class="m-h2 m-reveal">Be the one that <span class="g">picks up.</span></div>
+    <p class="m-sub m-reveal">Sits on top of your existing phone setup. Calls forward after 7pm and it handles everything from there.</p>
+    <div class="m-steps m-reveal">
+      <div class="m-step"><div class="m-step-num">01</div><div><div class="m-step-title">Call Comes In</div><div class="m-step-text">AI answers every call — no voicemail, no hold music. During hours it routes to live staff. After hours it handles the call itself.</div></div></div>
+      <div class="m-step"><div class="m-step-num">02</div><div><div class="m-step-title">Lead Gets Qualified</div><div class="m-step-text">Real conversation — no press-1 menus. Collects name, number, what they need, and scores urgency.</div></div></div>
+      <div class="m-step"><div class="m-step-num">03</div><div><div class="m-step-title">Manager Gets Notified</div><div class="m-step-text">Right manager gets an email within minutes — name, number, need, and a Hot / Warm / Cold score.</div></div></div>
+      <div class="m-step"><div class="m-step-num">04</div><div><div class="m-step-title">Nobody Slips Through</div><div class="m-step-text">Hang-ups get an automatic SMS follow-up. AI qualifies them over text before any human gets involved.</div></div></div>
+    </div>
+  </div>
+
+  <div class="m-slide" id="ms4">
+    <div class="m-slide-num">4 / 7</div>
+    <div class="m-eyebrow m-reveal">The Numbers</div>
+    <div class="m-h2 m-reveal">You answer first. <span class="g">You win more.</span></div>
+    <div class="m-results m-reveal">
+      <div class="m-result"><div class="m-result-num">100%</div><div class="m-result-label">Of after-hours<br>calls answered</div></div>
+      <div class="m-result"><div class="m-result-num">~2min</div><div class="m-result-label">Time to manager<br>notification</div></div>
+      <div class="m-result"><div class="m-result-num">3x</div><div class="m-result-label">Departments covered<br>simultaneously</div></div>
+    </div>
+    <p class="m-tagline m-reveal">Same ad spend. Same listings.<br>Just fewer leads walking out the door.</p>
+  </div>
+
+  <div class="m-slide" id="ms5">
+    <div class="m-slide-num">5 / 7</div>
+    <div class="m-eyebrow m-reveal">What's Included</div>
+    <div class="m-h2 m-reveal">Everything needed to <span class="g">stop losing ground.</span></div>
+    <div class="m-reveal">
+      <div class="m-feat"><div class="m-feat-icon">🎙️</div><div class="m-feat-title">Voice AI That Holds a Conversation</div><div class="m-feat-text">Powered by ElevenLabs. Natural-sounding and responsive — callers get answers and leave their details instead of hanging up.</div><div class="m-feat-tag">↳ Powered by ElevenLabs</div></div>
+      <div class="m-feat"><div class="m-feat-icon">🔀</div><div class="m-feat-title">Department-Level Routing</div><div class="m-feat-text">Dedicated lines for Parts, Service, and Sales. Each with its own agent, qualification logic, and notification chain.</div><div class="m-feat-tag">↳ Independent per dept</div></div>
+      <div class="m-feat"><div class="m-feat-icon">⚡</div><div class="m-feat-title">Instant Manager Alerts</div><div class="m-feat-text">Name, number, need, and lead score — delivered by email the moment a call ends. Your team starts the day with context, not catch-up.</div><div class="m-feat-tag">↳ Via Gmail</div></div>
+      <div class="m-feat"><div class="m-feat-icon">💬</div><div class="m-feat-title">Automatic SMS Follow-Up</div><div class="m-feat-text">Hang-ups get a follow-up text automatically. AI qualifies them over SMS and hands your team a warm lead — not a cold number to chase.</div><div class="m-feat-tag">↳ Via Twilio</div></div>
+      <div class="m-feat"><div class="m-feat-icon">🛡️</div><div class="m-feat-title">Compliance Built In</div><div class="m-feat-text">STOP / opt-out detection is automatic. Anyone who opts out is logged immediately and never contacted again.</div><div class="m-feat-tag">↳ Do Not Contact list</div></div>
+      <div class="m-feat"><div class="m-feat-icon">📊</div><div class="m-feat-title">Runs Alongside Your Existing Stack</div><div class="m-feat-text">Works with CDK, DealerSocket, VinSolutions, or whatever you're running. No disruption to current workflows.</div><div class="m-feat-tag">↳ CRM-agnostic</div></div>
+    </div>
+  </div>
+
+  <div class="m-slide" id="ms6">
+    <div class="m-slide-num">6 / 7</div>
+    <div class="m-eyebrow m-reveal">Under the Hood</div>
+    <div class="m-h2 m-reveal">From first ring to <span class="g">manager's inbox.</span></div>
+    <div class="m-arch m-reveal">
+      <div class="m-arch-box gold"><div class="m-arch-label">Phone</div><div class="m-arch-name">Twilio</div><div class="m-arch-detail">4 dedicated numbers — one per dept. Calls routed to ElevenLabs after hours.</div></div>
+      <div class="m-arch-arrow">↓</div>
+      <div class="m-arch-box gold"><div class="m-arch-label">Voice AI</div><div class="m-arch-name">ElevenLabs</div><div class="m-arch-detail">Handles the voice conversation. Fires a webhook to n8n on call end.</div></div>
+      <div class="m-arch-arrow">↓</div>
+      <div class="m-arch-box"><div class="m-arch-label">Orchestration</div><div class="m-arch-name">n8n</div><div class="m-arch-detail">Routes to the right dept. Runs GPT-4.1 to qualify the lead. Checks for duplicates.</div></div>
+      <div class="m-arch-arrow">↓</div>
+      <div class="m-arch-box green"><div class="m-arch-label">Output</div><div class="m-arch-name">Email + SMS</div><div class="m-arch-detail">Manager notified via Gmail. Caller gets a confirmation SMS. Lead logged. <span class="m-chip m-chip-mail">GMAIL</span> <span class="m-chip m-chip-sms">SMS</span></div></div>
+    </div>
+    <div style="margin:16px 0 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)" class="m-reveal">↓ Per department</div>
+    <div class="m-reveal">
+      <div class="m-dept parts"><div class="m-dept-name">🔧 Parts Agent</div><div class="m-dept-text">Qualifies → logs → emails Parts mgmt → SMS confirmation → follow-up queue if no info</div></div>
+      <div class="m-dept service"><div class="m-dept-name">🛠️ Service Agent</div><div class="m-dept-text">Qualifies → logs → emails Service mgmt → SMS confirmation → follow-up queue if no info</div></div>
+      <div class="m-dept sales"><div class="m-dept-name">💼 Sales Agent</div><div class="m-dept-text">Qualifies → scores Hot/Warm/Cold → emails Sales mgmt → SMS → follow-up queue if no info</div></div>
+    </div>
+  </div>
+
+  <div class="m-slide m-cta" id="ms7">
+    <div class="m-slide-num">7 / 7</div>
+    <div class="m-eyebrow m-reveal" style="text-align:center">The Bottom Line</div>
+    <div class="m-h2 m-reveal" style="text-align:center;margin-top:12px">Customers don't wait.<br><span class="g">Your competitor<br>knows that.</span></div>
+    <p class="m-sub m-reveal" style="text-align:center;margin-top:16px;max-width:100%">Every unanswered call after 7pm is a lead that paid off for someone else. This closes that gap — without changing your team, your CRM, or how you operate.</p>
+  </div>
+
+</div>
+
 <script>
-const slides = document.querySelectorAll('.slide');
+// ── DESKTOP ──
+const slides = document.querySelectorAll('#desktop-view .slide');
 const total = slides.length;
 let current = 0;
-
 const dotsEl = document.getElementById('dots');
 slides.forEach((_, i) => {
   const d = document.createElement('div');
@@ -627,42 +446,59 @@ slides.forEach((_, i) => {
   d.onclick = () => goTo(i);
   dotsEl.appendChild(d);
 });
-
-function updateProgress() {
-  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
-}
-
+function updateProgress() { document.getElementById('progress').style.width = ((current+1)/total*100)+'%'; }
 function goTo(n) {
   slides[current].classList.remove('active');
   slides[current].classList.add('exit');
   setTimeout(() => slides[current].classList.remove('exit'), 500);
   current = n;
   slides[current].classList.add('active');
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
-  document.getElementById('btn-prev').disabled = current === 0;
-  document.getElementById('btn-next').disabled = current === total - 1;
-  document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + total;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===current));
+  document.getElementById('btn-prev').disabled = current===0;
+  document.getElementById('btn-next').disabled = current===total-1;
+  document.getElementById('slide-counter').textContent = (current+1)+' / '+total;
   updateProgress();
 }
-
-function go(dir) {
-  const next = current + dir;
-  if (next >= 0 && next < total) goTo(next);
-}
-
+function go(dir) { const n=current+dir; if(n>=0&&n<total) goTo(n); }
 document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1);
-  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') go(-1);
 });
-
-let startX = 0;
-document.querySelector('.deck').addEventListener('touchstart', e => startX = e.touches[0].clientX);
-document.querySelector('.deck').addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - startX;
-  if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
-});
-
+const deck = document.querySelector('.deck');
+if(deck) {
+  let sx=0;
+  deck.addEventListener('touchstart', e => sx=e.touches[0].clientX);
+  deck.addEventListener('touchend', e => { const dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>40) go(dx<0?1:-1); });
+}
 updateProgress();
+
+// ── MOBILE ──
+const mSlides = document.querySelectorAll('.m-slide');
+const mpb = document.getElementById('mpb');
+const mhint = document.getElementById('mhint');
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.m-reveal').forEach(el => observer.observe(el));
+
+// Progress bar
+const slideObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      const i = Array.from(mSlides).indexOf(e.target);
+      mpb.style.width = ((i+1)/mSlides.length*100)+'%';
+    }
+  });
+}, { threshold: 0.5 });
+mSlides.forEach(s => slideObs.observe(s));
+
+// Hide hint on scroll
+let hintGone = false;
+window.addEventListener('scroll', () => {
+  if(!hintGone && window.scrollY > 60) { mhint.classList.add('gone'); hintGone = true; }
+}, { passive: true });
 </script>
 </body>
 </html>
